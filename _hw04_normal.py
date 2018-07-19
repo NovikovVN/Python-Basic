@@ -11,7 +11,7 @@ user_surname = input('Введите Вашу фамилию: ')
 user_name = input('Введите Ваше имя: ')
 user_email = input('Введите Ваш e-mail: ')
 
-pattern_name_surname = '^[А-Я][а-я]+'
+pattern_name_surname = '^[А-Я][а-я]+$'
 pattern_email = '^[0-9_a-z]+@[0-9a-z]+\.(ru|org|com)$'
 
 user_check = True

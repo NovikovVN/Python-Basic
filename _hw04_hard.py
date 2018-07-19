@@ -31,7 +31,7 @@ def check_account(person):
 
 
 def withdraw_money(person, money):
-    if person['money'] - money > 0:
+    if person['money'] - money >= 0:
         person['money'] -= money
         person['money'] = check_account(person)
         return 'Вы сняли {} рублей'.format(money)
