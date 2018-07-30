@@ -25,7 +25,7 @@
 Каждый ход выбирается один случайный бочонок и выводится на экран.
 Также выводятся карточка игрока и карточка компьютера.
 
-Пользователю предлагается зачеркнуть цифру на карточке  или продолжить.
+Пользователю предлагается зачеркнуть цифру на карточке или продолжить.
 Если игрок выбрал "зачеркнуть":
 	Если цифра есть на карточке - она зачеркивается и игра продолжается.
 	Если цифры на карточке нет - игрок проигрывает и игра завершается.
@@ -62,11 +62,12 @@ from random import randint
 NUMBERS_MIN = 1
 NUMBERS_MAX = 90
 CARD_NUMBERS_COUNT = 15
+CELLS_IN_LINE = 9
 CARD_LINES_COUMT = 3
-CARD_WIDTH = 25
-min_digits = len(str(NUMBERS_MAX)) + 1
+digits = len(str(NUMBERS_MAX)) + 1
+card_width = digits * CELLS_IN_LINE
 numbers_in_line = int(CARD_NUMBERS_COUNT / CARD_LINES_COUMT)
-max_digits = int(CARD_WIDTH / numbers_in_line)
+cell_length = int(CELLS_IN_LINE / digits)
 
 class Card:
     def __init__(self):
@@ -84,12 +85,22 @@ class Card:
         return numbers_on_card
 
     def _card_line(self, numbers_line):
-        line = str()
-        for number in numbers_line:
+        empty_cells = list()
+        for _ in range(CELLS_IN_LINE-numbers_in_line):
             while True:
-                line += str(number).rjust(randint(min_digits,max_digits))
-                if len(line) < CARD_WIDTH:
+                number =  randint(0, CELLS_IN_LINE-numbers_in_line)
+                if not number in empty_cells:
+                    empty_cells.append(number)
                     break
+        number = 0
+        line = str()
+        while number != numbers_in_line:
+            for l in range(9):
+                if l in empty_cells:
+                    line += ' '*cell_length
+                else:
+                    line += str(numbers_line[number]).rjust(cell_length)
+                    number += 1
         return line
 
     def _text_on_card(self):
@@ -113,10 +124,10 @@ class Card:
         self.text = text_on_card.replace(number_str, number_replace)
 
     def show_card(self, name):
-        header_text = 'Карточка {}а'.format(name)
-        print(header_text.center(CARD_WIDTH,'-'))
+        header_text = ' Карточка {}а '.format(name)
+        print(header_text.center(card_width,'-'))
         print(self.text, end='')
-        print('-'*CARD_WIDTH)
+        print('-'*card_width)
 
 class Loto:
     def __init__(self):
