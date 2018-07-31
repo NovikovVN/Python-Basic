@@ -69,6 +69,7 @@ card_width = digits * CELLS_IN_LINE
 numbers_in_line = int(CARD_NUMBERS_COUNT / CARD_LINES_COUMT)
 cell_length = int(CELLS_IN_LINE / digits)
 
+
 class Card:
     def __init__(self):
         self.numbers = self._numbers_on_card()
@@ -78,7 +79,7 @@ class Card:
         numbers_on_card = list()
         for _ in range(CARD_NUMBERS_COUNT):
             while True:
-                number =  randint(NUMBERS_MIN, NUMBERS_MAX)
+                number = randint(NUMBERS_MIN, NUMBERS_MAX)
                 if not number in numbers_on_card:
                     numbers_on_card.append(number)
                     break
@@ -86,9 +87,9 @@ class Card:
 
     def _card_line(self, numbers_line):
         empty_cells = list()
-        for _ in range(CELLS_IN_LINE-numbers_in_line):
+        for _ in range(CELLS_IN_LINE - numbers_in_line):
             while True:
-                number =  randint(0, CELLS_IN_LINE-numbers_in_line)
+                number = randint(0, CELLS_IN_LINE - numbers_in_line)
                 if not number in empty_cells:
                     empty_cells.append(number)
                     break
@@ -97,37 +98,38 @@ class Card:
         while number != numbers_in_line:
             for l in range(9):
                 if l in empty_cells:
-                    line += ' '*cell_length
+                    line += ' ' * cell_length
                 else:
                     line += str(numbers_line[number]).rjust(cell_length)
                     number += 1
         return line
 
     def _text_on_card(self):
-        numbers_on_card =  self.numbers
+        numbers_on_card = self.numbers
         text_on_card = str()
         for l in range(3):
-            number_from = l*numbers_in_line
+            number_from = l * numbers_in_line
             number_to = number_from + numbers_in_line
             numbers_line = numbers_on_card[number_from:number_to]
-            text_on_card += self._card_line(numbers_line)+'\n'
+            text_on_card += self._card_line(numbers_line) + '\n'
         return text_on_card
 
     def erase_number(self, number):
         text_on_card = self.text
-        if ' '+str(number)+'\n' in text_on_card:
+        if ' ' + str(number) + '\n' in text_on_card:
             end = '\n'
         else:
             end = ' '
-        number_str = ' '+str(number)+end
-        number_replace = ' '+'-'*len(str(number))+end
+        number_str = ' ' + str(number) + end
+        number_replace = ' ' + '-' * len(str(number)) + end
         self.text = text_on_card.replace(number_str, number_replace)
 
     def show_card(self, name):
         header_text = ' Карточка {}а '.format(name)
-        print(header_text.center(card_width,'-'))
+        print(header_text.center(card_width, '-'))
         print(self.text, end='')
-        print('-'*card_width)
+        print('-' * card_width)
+
 
 class Loto:
     def __init__(self):
@@ -153,7 +155,7 @@ class Loto:
         while True:
             self._show_barrels()
             barrel = self._new_barrel()
-            barrels_rest = NUMBERS_MAX+1 - NUMBERS_MIN - len(self._barrels)
+            barrels_rest = NUMBERS_MAX + 1 - NUMBERS_MIN - len(self._barrels)
             print('Новый бочонок: {} (осталось {})'.format(barrel, barrels_rest))
             player_card.show_card('игрок')
             computer_card.show_card('компьютер')
@@ -165,18 +167,18 @@ class Loto:
                     print('Игра окончена! Победил игрок!')
                     break
                 player_card.erase_number(barrel)
-            elif not(player_choice in ('y', 'Y')) and not(barrel in player_card.numbers):
+            elif not (player_choice in ('y', 'Y')) and not (barrel in player_card.numbers):
                 pass
             else:
                 print('Игра окончена! Игрок ошибся!')
                 break
             if barrel in computer_card.numbers:
-               computer_card.numbers.remove(barrel)
-               print('Компьютер вычеркнул номер', barrel)
-               if computer_card.numbers == []:
-                   print('Игра окончена! Победил компьютер!')
-                   break
-               computer_card.erase_number(barrel)
+                computer_card.numbers.remove(barrel)
+                print('Компьютер вычеркнул номер', barrel)
+                if computer_card.numbers == []:
+                    print('Игра окончена! Победил компьютер!')
+                    break
+                computer_card.erase_number(barrel)
             next_step = input('Следующий бочонок? (y/n)')
             if barrels_rest == 0:
                 print('Игра окончена! Все бочонки выпали!')
@@ -185,6 +187,7 @@ class Loto:
                 print('Игра прервана!')
                 break
             print()
+
 
 loto = Loto()
 loto.launch_game()
